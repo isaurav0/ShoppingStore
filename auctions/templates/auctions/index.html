@@ -1,0 +1,90 @@
+{% extends "auctions/layout.html" %}
+{% block title %}
+    {% if watchlist %}
+        Auction|Watch List
+    {% else %}
+        Auction|All Listings
+    {% endif %}
+
+{% endblock %}
+{% block body %}
+<head>
+<style>
+table {
+    border-collapse: collapse;
+}
+
+table tr td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 30px;
+    padding-left: 20px;
+    border: 1px solid black;
+}
+</style>
+</head>
+    {% if message %}
+        <div><font color="green">{{ message }}</font></div>
+        <br>
+    {% endif %}
+    {% if error %}
+        <div><font color="red">{{ error }}</font></div>
+        <br>
+    {% endif %}
+    <ul class="nav">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'index' %}">All Listings</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'watchlist' %}">Watchlist</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'available_categories' %}">Categories</a>
+        </li>    
+    </ul>
+    <hr>
+
+    <table>        
+        <thead>
+            <tr>
+                <td>
+                    {% if watchlist %}
+                        <strong>Watch list</strong>
+                    {% else %}
+                        <strong>LISTINGS</strong> <a href="{% url 'create_auction' %}">(Create)</a>
+                    {% endif %}
+                </td>
+                <td colspan=4 align='center'><strong>ACTION</td>
+            </tr>
+        </thead>
+        <tbody>
+            {%for row in rows %}
+            <tr>
+                <td>
+                    <a href="{% url 'auction_detail' id=row.id %}">{{row.title}}
+                </td>
+                <td>
+                    <a href="{% url 'place_bid' id=row.id %}">Place Bid
+                </td>
+                <td>
+                    {% if row.watched %}
+                        <a href="{% url 'remove_from_watchlist' id=row.id %}">Remove Watch List
+                    {% else %}
+                        <a href="{% url 'add_to_watchlist' id=row.id %}">Add to Watch List
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'add_comment' id=row.id %}">Add Comment
+                </td>
+                <td>
+                    {% if row.owner_item %}
+                        <a href="{% url 'close_auction' id=row.id %}">Close
+                    {% endif %}
+                </td>
+
+            </tr>
+            {% endfor %}
+    
+        </tbody>
+    </table>
+{% endblock %}

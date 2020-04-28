@@ -1,0 +1,49 @@
+{% extends "auctions/layout.html" %}
+{% block title %}
+    Auction|Detail
+{% endblock %}
+{% block body %}
+
+    <div><a href="{% url 'index' %}">Back</a></div>
+    <h2>Auction Details</h2>
+    {% if bid_won %}
+        <div><font color="green">Congratulations!! You have won this bid</font></div>
+    {% endif %}
+    <hr>
+    <div>
+        <label><b>Title:</b></label>
+        <label>{{item.title}}</label>
+    </div>
+    <div>
+        <label><b>Description:</b></label>
+        <label>{{item.description}}</label>
+    </div>
+    <div>
+        <label><b>Category:</b></label>
+        <label>{{item.category}}</label>
+    </div>
+    <div>
+        <label><b>Current Bid:</b></label>
+        <label>{{highest_bid}}</label>
+    </div>
+    {% if item.listing_url %}
+        <img src="{{ item.listing_url }}" class = "result" />
+    {% endif %}
+    <br>
+    <h4>Comments</h4>
+    {% if comments %}
+        <ul>
+        {%for c in comments%}
+        <li>
+            <label><i>{{c.created_at}}</i></label>
+            <label><b>{{c.user}}</b></label>
+            <br>
+            <label>{{c.comment}}</label>
+        </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    <hr>
+    <div><a href="{% url 'index' %}">Back</a></div>
+
+{% endblock %}
