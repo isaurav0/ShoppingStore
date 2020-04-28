@@ -9,11 +9,15 @@
     </head>
     <body>
 
-        <div class="age-control">
-            Hello I control Age.          
+        <div id="age-gate">
+            <h1>Please Verify Your Age</h1><br>
+            <h4>Are you over 21 years of age?</h4><br>
+            <button type="submit" value="1" class="btn btn-success" onclick="setAge(this.value)">Yes</button>
+            <button type="submit" value="0" class="btn btn-danger" onclick="setAge(this.value)">No</button><br><br>
+            <h4 class="text-danger" id="reject" > You can't proceed. </h4>
         </div>
 
-        <div class="content">
+        <div id="content">
              <h1>Auctions</h1>
             {% if user.is_authenticated %}
                 <div>
@@ -34,6 +38,36 @@
         </div>       
 
         <script type="text/javascript">
+
+            checkAge()
+                        
+            function setAge(value){
+                window.localStorage.setItem("AgeOkay", value==1 ? true : false)
+                checkAge()
+            }
+
+            function checkAge(){
+
+                let AgeOkay = window.localStorage.getItem("AgeOkay")
+                let ageGate = document.getElementById("age-gate")
+                let content = document.getElementById("content")
+                let reject = document.getElementById("reject")
+
+                if(AgeOkay=="true"){                
+                    ageGate.style.display = "none"
+                    content.style.display = "block"
+                }
+                else if(AgeOkay==null){
+                    ageGate.style.display = "block"
+                    content.style.display = "none"
+                }
+                else{
+                    ageGate.style.display = "block"
+                    content.style.display = "none"
+                    reject.style.visibility = "visible"
+                }
+
+            }
 
         </script>
 

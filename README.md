@@ -1,1 +1,1 @@
-# Django-ebay-Prototype
+# A django based web app shopping store
