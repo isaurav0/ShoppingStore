@@ -26,5 +26,11 @@ urlpatterns = [
     url(r"auctions/close_auction/(?P<id>\w+)/$",
         views.close_auction, name="close_auction"),
     path("auctions/available_categories", views.available_categories,
-         name="available_categories")
+         name="available_categories"),
+    path("medical", views.main_product_view, name="medical"),
+    path("recreational", views.main_product_view, name="recreational"),
+    path('products/<str:category>',
+         views.product_filter, name='product_filter'),
+    path('products/detail/<int:product_id>',
+         views.product_detail, name='product_detail')
 ]

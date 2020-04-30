@@ -1,0 +1,45 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block title %}
+    Choose
+{% endblock %}
+
+{% block body %}
+
+	<div id="first">
+
+		<div class="choose">
+
+			<a href="/medical">
+
+				<div class="item" id="medical">
+
+					<div class="label">
+						Medical (0)
+					</div>
+
+					<img src="{% static 'auctions/img/medical.jpg' %}">
+
+				</div>
+
+			</a>
+
+			<a href="/recreational">
+
+				<div class="item" id="recreational">
+
+					<div class="label">
+						Recreational (2)
+					</div>
+
+					<img src="{% static 'auctions/img/recreational.jpeg' %}">
+
+				</div>
+			</a>
+
+		</div>
+
+	</div>
+
+{% endblock %}

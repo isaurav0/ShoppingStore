@@ -1,14 +1,12 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
-from django.urls import reverse
-
+from django.urls import reverse, resolve
 from .models import User, AuctionListing, AuctionBid,\
-    AuctionWatchList, AuctionComment
+    AuctionWatchList, AuctionComment, Product, ProductCart
 
 
 def search_by_category(request, category):
@@ -52,12 +50,12 @@ def index(request, watchlist=False, category=None):
         'rows': rows,
         'watchlist': watchlist,
     }
+
     return render(
         request,
-        "auctions/index.html",
+        "products/main_product_choose.html",
         params
     )
-
 
 @login_required
 def create_auction(request):
@@ -340,3 +338,66 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+
+
+def product_filter(request, category):
+    _type = request.GET.get('type', 'THC')
+    category = category.capitalize()
+    print(category)
+    print(_type)
+    existing = Product.objects.filter(
+        product_category=category,
+        # product_type=_type
+    )
+    params = {
+        'rows': existing
+    }
+    return render(request, "products/category.html", params)
+
+
+def main_product_view(request):
+    url_name = resolve(request.path).url_name
+    params = {
+        "url": url_name
+    }
+    return render(request, "products/choose.html", params)
+
+
+def product_detail(request, product_id):
+    try:
+        product = Product.objects.get(
+            pk=product_id,
+        )
+    except Product.DoesNotExist:
+        return JsonResponse({"message": "Product Not Found"}, status=404)
+
+    params = {
+        'product': product
+    }
+    return render(request, "products/product_detail.html", params)    
+
+
+def add_to_cart(request, product_id):
+
+    if request.method == "PATCH":
+        try:
+            product = Product.objects.get(
+                pk=product_id,
+            )
+        except Product.DoesNotExist:
+            return JsonResponse({"message": "Product Not Found"}, status=404)
+
+        existing_cart = ProductCart.objects.filter(product=product)
+        if existing_cart:
+            return JsonResponse({"message": "Product alreay in cart"}, status=400)
+        response = ProductCart.objects.create(
+            user=request.user,
+            product=product,
+        )
+        # #Return to home page
+        message = "Successfully added to cart."
+        return JsonResponse({"message": message}, status=200)
+
+    else:
+        message = "GET request handler not found"
+        return JsonResponse({"message": message}, status=404)
