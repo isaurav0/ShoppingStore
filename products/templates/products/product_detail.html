@@ -1,0 +1,107 @@
+{% extends "products/layout.html" %}
+
+{% load static %}
+{% block title %}
+    Details
+{% endblock %}
+{% block body %}
+
+	<link href="{% static 'products/css/product_detail.css' %}" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Neuton:wght@300&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Neuton:wght@700;800&display=swap" rel="stylesheet"> 
+	
+
+	<div class="product_outer">
+		
+		<div class="image_view product_inner">
+			<img src="{{ product.image_url }}" class="product_image">
+
+			{% if in_cart %}
+				<button class="cart_button added" id="{{product.id}}" onclick="addToCart(this.id)" data-buttonWork="remove">Remove From Cart</button>
+			{% else %}
+				<button class="cart_button" id="{{product.id}}" onclick="addToCart(this.id)" data-buttonWork="add">Add To Cart</button>
+			{% endif %}
+		</div>
+
+		<div class="product_details product_inner">
+			<div class="product_title">
+				<b>{{ product.title }}</b>
+			</div>
+			<br>
+
+			<div class="product_concentration">
+				<p>
+					<b>{{ product.concentration }}</b>
+				</p>
+			</div>
+			<br>
+
+			<div class="product_description">
+				<p>
+					{{ product.description }}
+				</p>
+			</div>
+
+		</div>				
+
+		<div class="product_ingredients product_inner">
+			<b> Ingredients </b> <br>
+			<span class="ingredients">{{ product.product_ingredients }}</span>
+		</div>
+
+	</div>	
+
+	{% csrf_token %}
+
+	<script type="text/javascript">
+
+
+		function addToCart(id){
+			var csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+			let buttonWork = event.target.getAttribute("data-buttonWork")
+			var target = event.target
+
+			if(buttonWork=="add"){
+		        fetch('/products/add_to_cart/'+id, {
+		            method: 'POST',
+		            headers: {'X-CSRFToken': csrftoken},	          
+		          })
+					.then(res=>{
+						if(res.status == 200){
+							target.className = "cart_button added"
+							target.setAttribute("data-buttonWork", "remove")
+							target.innerHTML = "Remove From Cart"
+						}
+						return res.json()						
+					})
+					.then(res=>{
+						console.log(res)
+						return 
+					})
+			}
+
+			else{
+				
+				fetch('/products/remove_from_cart/'+id, {
+		            method: 'POST',
+		            headers: {'X-CSRFToken': csrftoken},	          
+		          })
+					.then(res=>{
+						if(res.status == 200){
+							target.className = "cart_button"	
+							target.setAttribute("data-buttonWork", "add")	
+							target.innerHTML = "Add To Cart"					
+						}
+						return res.json()						
+					})
+					.then(res=>{
+						console.log(res)
+						return 
+					})
+
+			}
+		}
+	</script>
+
+
+{% endblock %}

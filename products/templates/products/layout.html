@@ -1,0 +1,77 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Products{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+        <link href="{% static 'products/css/styles.css' %}" rel="stylesheet">
+          <link rel="shortcut icon" href="{% static 'products/img/favicon.ico' %}" />
+    </head>
+    <body>
+
+        <div id="age-gate" class="loginbox container col-md-4 col-md-offset-3">
+            <div id="ask">
+                <h1>Age Verification</h1><br>
+                <h4>Are you over 21 years of age?</h4><br>
+                <button type="submit" value="1" class="btn btn-success" onclick="setAge(this.value)">Yes</button>
+                <button type="submit" value="0" class="btn btn-danger" onclick="setAge(this.value)">No</button>
+            </div>            
+            <div class="text-secondary" id="reject" >
+                Since you are underage, kindly abandon our site as you will be carded upon delivery. We will love to see you back on your 21st birthday.
+            </div>
+        </div>
+
+        <div id="content">
+
+            <nav class="navigationbar" role="navigation">   
+
+                    <div class="nav-header">
+                            <a class="navbar-brand" href="/">Home </a>                            
+                    </div>                
+
+                    <ul class="nav-links" id="navbarToggleExternalContent">
+
+                        {% if user.is_authenticated %}            
+
+                            <li class="nav-item">
+                                    <strong class="nav-link">{{ user.username }}</strong>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                            </li>
+
+                        {% else %}
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'register' %}">Register</a>
+                            </li>
+
+                            <!-- clear local Storage to confirm age after every login -->
+                            <script>
+                                window.localStorage.clear()                
+                            </script>                
+
+                        {% endif %}                    
+                    </ul>
+
+            </nav>
+
+            <div class="body" id="body">
+                {% block body %}
+                {% endblock %}                
+            </div>
+                        
+        </div>            
+
+        {% if user.is_authenticated %}
+            <script src="{% static 'products/js/age_check.js' %}"></script>
+        {% endif %}   
+    </body>
+</html>
