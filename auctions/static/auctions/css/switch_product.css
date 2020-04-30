@@ -1,0 +1,39 @@
+.tab input[type=radio]{
+	display: none;
+}
+
+.tab{
+	float: left;
+	margin-left: 10px;
+}
+
+.tab label{
+	border: 1px solid gray;
+	padding: 10px;
+	margin-top: 10px;
+	color: gray;
+	cursor: pointer;
+}
+
+.tabs{
+	top: 0px;
+	clear: both;
+	margin-left: 10px;
+}
+
+input[type=radio]:checked ~ label{
+	background-color: #f0ad4e;
+	border-bottom: none;
+	color: #f7f7f7;
+	border: 1px solid #f0ad4e;
+}
+
+.choose{
+	display: none;
+	width: auto;
+}
+
+input[type=radio]:checked ~ .choose{
+	display: inline-flex;
+	min-width: 100%;	
+}

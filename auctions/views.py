@@ -368,18 +368,30 @@ def product_detail(request, product_id):
         product = Product.objects.get(
             pk=product_id,
         )
+
+        try:
+            existing_cart = ProductCart.objects.filter(product=product)
+            if existing_cart:
+                in_cart = True
+            else:
+                in_cart = False
+        except Exception as e:
+            in_cart = False
+            print(e)
+
     except Product.DoesNotExist:
         return JsonResponse({"message": "Product Not Found"}, status=404)
 
     params = {
-        'product': product
+        'product': product,
+        'in_cart': in_cart
     }
-    return render(request, "products/product_detail.html", params)    
+    return render(request, "products/product_detail.html", params)
 
 
 def add_to_cart(request, product_id):
 
-    if request.method == "PATCH":
+    if request.method == "POST":
         try:
             product = Product.objects.get(
                 pk=product_id,
@@ -397,6 +409,34 @@ def add_to_cart(request, product_id):
         # #Return to home page
         message = "Successfully added to cart."
         return JsonResponse({"message": message}, status=200)
+
+    else:
+        message = "GET request handler not found"
+        return JsonResponse({"message": message}, status=404)
+
+
+def remove_from_cart(request, product_id):
+
+    if request.method == "POST":
+        try:
+            product = Product.objects.get(
+                pk=product_id,
+            )
+        except Product.DoesNotExist:
+            return JsonResponse({"message": "Product Not Found"}, status=404)
+        try:
+            # Delete cart entry
+            existing = ProductCart.objects.get(
+                user_id=request.user,
+                product=product,
+            )
+            existing.delete()
+            # #Return to home page
+            message = "Successfully removed from cart."
+            return JsonResponse({"message": message}, status=200)
+        except ProductCart.DoesNotExist:
+            message = "ERROR: Can't remove from cart"
+            return JsonResponse({"message": message}, status=400)
 
     else:
         message = "GET request handler not found"

@@ -3,7 +3,7 @@
     height: 10%;
     height: 100px;
     top: 0px;
-    box-shadow: 2px 0px 4px gray;
+    /*box-shadow: 2px 0px 4px gray;*/
     z-index: 1;
 }
 
@@ -91,7 +91,7 @@ body{
 .item:hover img{
     border: 1px solid #5bc0de;
     /*transition: padding 3s all ease;*/
-    padding: 20px;
+    padding: 0px;
     box-shadow: 0 20px 50px #5bc0de;
 
 }
@@ -124,3 +124,8 @@ a:hover{
 
 :focus {outline:none;}
 ::-moz-focus-inner {border:0;}
+
+
+.label{
+    color: black;
+}

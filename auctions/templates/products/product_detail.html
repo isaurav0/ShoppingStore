@@ -15,7 +15,12 @@
 		
 		<div class="image_view product_inner">
 			<img src="{{ product.image_url }}" class="product_image">
-			<button class="cart_button">Add To Cart</button>			
+
+			{% if in_cart %}
+				<button class="cart_button added" id="{{product.id}}" onclick="addToCart(this.id)" data-buttonWork="remove">Remove From Cart</button>
+			{% else %}
+				<button class="cart_button" id="{{product.id}}" onclick="addToCart(this.id)" data-buttonWork="add">Add To Cart</button>
+			{% endif %}
 		</div>
 
 		<div class="product_details product_inner">
@@ -44,6 +49,60 @@
 		</div>
 
 	</div>	
+
+	{% csrf_token %}
+
+	<script type="text/javascript">
+
+
+		function addToCart(id){
+			var csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+			var target = event.target
+			let buttonWork = event.target.getAttribute("data-buttonWork")
+			console.log(buttonWork)
+
+			if(buttonWork=="add"){
+		        fetch('/products/add_to_cart/'+id, {
+		            method: 'POST',
+		            headers: {'X-CSRFToken': csrftoken},	          
+		          })
+					.then(res=>{
+						if(res.status == 200){
+							target.className = "cart_button added"
+							target.setAttribute("data-buttonWork", "remove")
+							target.innerHTML = "Remove From Cart"
+						}
+
+
+						return res.json()						
+					})
+					.then(res=>{
+						
+					})
+			}
+
+			if(buttonWork = "remove"){
+				
+				fetch('/products/remove_from_cart/'+id, {
+		            method: 'POST',
+		            headers: {'X-CSRFToken': csrftoken},	          
+		          })
+					.then(res=>{
+						if(res.status == 200){
+							target.className = "cart_button"	
+							target.setAttribute("data-buttonWork", "add")	
+							target.innerHTML = "Add To Cart"					
+						}
+
+						return res.json()						
+					})
+					.then(res=>{
+						
+					})
+
+			}
+		}
+	</script>
 
 
 {% endblock %}

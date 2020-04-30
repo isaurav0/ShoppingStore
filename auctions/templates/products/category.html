@@ -1,32 +1,79 @@
 {% extends "auctions/layout.html" %}
+{% load static %}
+
 {% block title %}
     Auction|Categories
 {% endblock %}
 {% block body %}
-<!-- 
+
+	<link href="{% static 'auctions/css/switch_product.css' %}" rel="stylesheet">
+
 	<div class="tabs">
-		
-		
+
+		<div class="tab">
+			<input type="radio" id="tab-THC" name="tab-group" checked>
+       		<label for="tab-THC">THC</label>
+ 
+		    <div class="choose">
+
+		        {%for row in rows %}
+
+		        	{% if row.product_type == 'THC' %}
+
+			        <div class="item">	
+
+			            <a href="/products/detail/{{row.id}}">
+
+							<div class="label" style="font-size: 1em;">
+								{{row.title}}
+							</div>
+
+							<img src="{{ row.image_url }}">
+
+						</a>
+			        </div>
+
+			        {% endif %}
+
+		        {% endfor %}
+
+		    </div>
+
+		</div>
+
+
+		<div class="tab">
+
+			<input type="radio" id="tab-CBD" name="tab-group" >
+       		<label for="tab-CBD">CBD</label> 
+ 
+		    <div class="choose">
+
+		        {%for row in rows %}
+
+		        	{% if row.product_type == 'CBD' %}
+
+			        <div class="item">	
+
+			            <a href="/products/detail/{{row.id}}">
+
+							<div class="label" style="font-size: 1em;">
+								{{row.title}}
+							</div>
+
+							<img src="{{ row.image_url }}">
+
+						</a>
+			        </div>
+
+			        {% endif %}
+
+		        {% endfor %}
+
+		    </div>
+
+		</div>
+
 	</div>
-  -->
-    <div class="choose">
-        {%for row in rows %}
-	        <div class="item">	                 	            
-	            <a href="/products/detail/{{row.id}}">
-
-	            	{{row.product_type}}
-									
-					<div class="label" style="font-size: 1em;">
-						{{row.title}}
-					</div>
-
-					<img src="{{ row.image_url }}">
-
-				</a>
-
-	        </div>
-
-        {% endfor %}
-    </div>
 
 {% endblock %}

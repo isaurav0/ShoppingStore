@@ -16,7 +16,6 @@
 .image_view{
 	width: 40%;
 	float: left;
-	/*border: 1px solid green;*/
 	align-items: center;
 	text-align: center;
 }
@@ -24,6 +23,11 @@
 .product_image{
 	width: 100%;
 	height: 400px;
+	padding: 40px;
+}
+
+.product_image:hover{
+	padding: 10px;
 }
 
 .cart_button{
@@ -72,4 +76,7 @@
 	width: 76%;
 }
 
-
+.added{
+	background-color: gray;
+	color: white;
+}

@@ -32,5 +32,9 @@ urlpatterns = [
     path('products/<str:category>',
          views.product_filter, name='product_filter'),
     path('products/detail/<int:product_id>',
-         views.product_detail, name='product_detail')
+         views.product_detail, name='product_detail'),
+    path('products/add_to_cart/<int:product_id>',
+         views.add_to_cart, name='add_to_cart'),
+    path('products/remove_from_cart/<int:product_id>',
+         views.remove_from_cart, name='remove_from_cart')
 ]
