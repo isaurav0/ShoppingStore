@@ -54,47 +54,82 @@
 
 
 	<div class="comment_section">
+
 		<div class="comment_title"><b> Comments </b></div>
 		<hr>
-		<div class="comment_row">
+		<div class="comment_row" onclick="addComment()">
 			<input class="comment_textbox" id="comment_text" contenteditable placeholder="Add a comment .."></input>
-			<submit class="comment_button">Comment</submit>
+			<submit class="comment_button" data-buttonWork="comment" data-postID="{{product.id}}">Comment</submit>
 		</div>
 
-		<div class="previous_comments">			
-			<div class="comment_thread" id="cid1">
-				<div class="main_comment comment_container">
+		{% if comments %}
 
-					<div class="user_info">
-						<span class="username">Bukke Pathak</span>
-						<span class="Date"> · 2020 Jan 10 · </span>
+		<div class="previous_comments">	
+
+			{% for comment in comments %}
+
+				<!-- main comment box  -->
+				<div class="comment_thread" id="cid1">
+
+					<!-- comment -->
+					<div class="main_comment comment_container">
+
+						<div class="user_info">
+							<span class="username">{{ comment.user }}</span>
+							<span class="Date"> · {{ comment.created_at }} · </span>
+						</div>
+						
+						<div class="comment_text">
+							{{ comment.comment_text }}
+						</div>	
+						<button class="reply_button" data-commentID="{{ comment.id }}"><span><i class="fa fa-comment"></i> Reply</span></button>
+
 					</div>
-					
-					<div class="comment_text">
-						Hello ! I like this product quite so much. 
-					</div>	
-					<button class="reply_button"><span><i class="fa fa-comment"></i> Reply</span></button>
+
+					<!-- reply -->
+
+					{% if comment.replies %}
+
+					<div class="comment_container comment_reply">
+
+						<div class="reply_containers">
+
+							{% for reply in comment.replies %}
+
+							<hr>
+
+							<div class="reply_thread">
+								<div class="user_info">
+									<span class="username"> {{reply.user}} </span>
+									<span class="Date"> · {{reply.created_at}} · </span>
+								</div>
+								
+								<div class="comment_text">
+									{{reply.reply_text}}
+								</div>							
+							</div>
+
+							{% endfor %}
+						
+						</div>
+									
+						<!-- in the end is reply button -->
+						<div class="comment_row reply_row">
+							<input class="comment_textbox" id="comment_text" contenteditable placeholder="Add a comment .."></input>
+							<submit class="comment_button" role="reply" data-commentID="{{ comment.id }}">Reply</submit>
+						</div>
+
+					</div>					
+
+					{% endif %}
+
 				</div>
 
-				<div class="comment_reply comment_container">
-					<div class="user_info">
-						<span class="username">KP Oli</span>
-						<span class="Date"> · 2020 Jan 12 · </span>
-					</div>
-					
-					<div class="comment_text">
-						Thanks
-					</div>
-
-					<!-- <div class="comment_row">
-						<input class="comment_textbox" id="comment_text" contenteditable placeholder="Add a comment .."></input>
-						<submit class="comment_button">Reply</submit>
-					</div> -->
-				</div>			
-			</div>			
+			{% endfor %}
 
 		</div>
 
+		{% endif %}
 
 	</div>
 

@@ -1,7 +1,7 @@
 .product_outer{
 	/*border: 1px solid blue;*/
 	margin: 5px;
-	font-size: 20px;
+	font-size: 19px;
 	height: auto;
 	clear: both;
 	display: table;
@@ -63,10 +63,11 @@
 .ingredients{
 	font-family: serif;		
 	font-size: 20px;
+	justify-content: center;
 }
 
 .product_title{
-	font-size: 45px;
+	font-size: 40px;
 	font-weight: bolder;
 	width: 60%;
     font-family: 'Neuton', serif;
@@ -117,10 +118,11 @@
 	border: 1px solid rgb(235,235,235);
 	border-right: none;	
 	overflow-y: scroll;
-	padding: 0.5em;
+	padding-left: 5px;
 	min-width: 50%;
 	height: auto;
-	color: rgb(100,100,100);
+	color: rgb(80,80,80);
+	font-size: 15px;
 }
 
 
@@ -147,18 +149,22 @@
 	margin: 5px;	
 }
 
-.comment_container{
-	margin: 10px;
-	padding: 10px;	
-}
 
 .comment_reply{
-	margin-left: 10%;
+	/*margin-left: 15%;*/
 }
 
 .comment_thread{
 	background-color: rgb(245,245,245);
 	padding:5px;
+	margin-bottom: 10px;
+	font-size: 15px;
+	padding-left: 20px;
+	outline: 1px solid rgb(230,230,230);
+}
+
+.comment_thread:hover{
+	outline: 1px solid rgb(230,230,230);
 }
 
 .reply_button{
@@ -166,11 +172,20 @@
 	border: none;
 	font-size: 13px;
 	background-color: rgb(245,245,245);
+	color: gray;
 }
 
 .reply_button:hover{
-	outline: 1px solid white;
-	background-color: black;
-	color: white;
+	outline: 1px solid rgb(200,200,200);
+	color: rgb(80,80,80);
+	
 }
 
+.reply_row{
+	display: none;
+}
+
+.reply_thread{
+	margin-bottom: 5px; 
+	margin-left: 5em;
+}

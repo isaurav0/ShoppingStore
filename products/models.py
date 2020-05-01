@@ -49,10 +49,10 @@ class ProductComment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ('created_at',)
+        ordering = ('-created_at',)
 
     def __str__(self):
-        return self.product.title
+        return f'Product: {self.product.title} Comment: {self.comment}'
 
 
 class ProductCommentReply(models.Model):
@@ -63,7 +63,7 @@ class ProductCommentReply(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ('created_at',)
+        ordering = ('-created_at',)
 
     def __str__(self):
         return self.comment.comment

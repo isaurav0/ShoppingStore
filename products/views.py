@@ -8,6 +8,8 @@ from django.urls import reverse, resolve
 from .models import User, Product, ProductCart,\
     ProductComment, ProductCommentReply
 
+import json
+
 
 def search_by_category(request, category):
     return index(request, category=category)
@@ -104,26 +106,41 @@ def main_product_view(request):
 @login_required
 def product_detail(request, product_id):
     try:
+
         product = Product.objects.get(
             pk=product_id,
         )
-
-        try:
-            existing_cart = ProductCart.objects.filter(product=product)
-            if existing_cart:
-                in_cart = True
-            else:
-                in_cart = False
-        except Exception as e:
-            in_cart = False
-            print(e)
-
     except Product.DoesNotExist:
         return JsonResponse({"message": "Product Not Found"}, status=404)
 
+    existing_cart = ProductCart.objects.filter(product=product)
+    in_cart = False
+    if existing_cart:
+        in_cart = True
+    comments = []
+    for comment in ProductComment.objects.filter(product=product):
+        comment_dict = {
+            'commend_id': comment.id,
+            'comment_text': comment.comment,
+            'user': comment.user,
+            'created_at': comment.created_at,
+            'replies': [],
+        }
+        replies = ProductCommentReply.objects.filter(comment=comment)
+        for reply in replies:
+            reply_dict = {
+                'reply_text': reply.reply,
+                'user': reply.user,
+                'created_at': reply.created_at
+            }
+            comment_dict['replies'].append(reply_dict)
+        comments.append(comment_dict)
+    print(comments)
+
     params = {
         'product': product,
-        'in_cart': in_cart
+        'in_cart': in_cart,
+        'comments': comments,
     }
     return render(request, "products/product_detail.html", params)
 
@@ -187,15 +204,17 @@ def remove_from_cart(request, product_id):
 @login_required
 def add_comment(request, product_id):
     if request.method == "POST":
+        print("Product_id is: ", product_id)
 
-        product = Product.objects.filter(
+        product = Product.objects.get(
             pk=product_id,
         )
         if not product:
             return JsonResponse({"message": "Product Not Found"}, status=404)
 
         # Read comment from UI
-        comment = request.POST["comment_text"]
+        response = json.loads(request.body)
+        comment = response["comment_text"]
 
         # Add comment
         response = ProductComment.objects.create(
@@ -204,15 +223,15 @@ def add_comment(request, product_id):
             comment=comment
         )
 
-        # Return to home page
-        message = "Successfully added a comment."
-        messages.add_message(request, messages.SUCCESS, message)
-        return JsonResponse({"message": "Product Not Found"}, status=200)
+        print("successfully saved comment")
+        return JsonResponse({"message": "success"}, status=200)
+
+    return JsonResponse({"message": "Not Found"}, status=404)
 
 
 @login_required
 def comment_reply(request, comment_id):
-    comment = ProductComment.objects.filter(
+    comment = ProductComment.objects.get(
         pk=comment_id,
     )
     if not comment:
@@ -220,7 +239,8 @@ def comment_reply(request, comment_id):
 
     if request.method == "POST":
         # Read comment from UI
-        reply = request.POST["reply"]
+        response = json.loads(request.body)
+        reply = response["reply"]
 
         # Add reply
         response = ProductCommentReply.objects.create(
@@ -228,8 +248,6 @@ def comment_reply(request, comment_id):
             user=request.user,
             reply=reply
         )
-        # Return to home page
-        message = "Successfully replied on a comment."
-        messages.add_message(request, messages.SUCCESS, message)
-        return redirect("index")
+        return JsonResponse({"message": "success"}, status=200)
+
     return render(request, "products/add_comment.html", {'item': item})
