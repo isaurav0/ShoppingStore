@@ -108,12 +108,6 @@ def product_detail(request, product_id):
             pk=product_id,
         )
 
-        comments = ProductComment.objects.get(
-            pk=product_id
-        )
-
-        print(comments)
-
         try:
             existing_cart = ProductCart.objects.filter(product=product)
             if existing_cart:
