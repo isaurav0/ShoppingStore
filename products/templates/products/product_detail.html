@@ -19,9 +19,9 @@
 				<img src="{{ product.image_url }}" class="product_image">
 
 				{% if in_cart %}
-					<button class="cart_button added" id="{{product.id}}" onclick="addToCart(this.id)" data-buttonWork="remove">Remove From Cart</button>
+					<button class="cart_button added" data-id="{{product.id}}" onclick="addToCart(this.getAttribute('data-id'))" data-buttonWork="remove">Remove From Cart</button>
 				{% else %}
-					<button class="cart_button" id="{{product.id}}" onclick="addToCart(this.id)" data-buttonWork="add">Add To Cart</button>
+					<button class="cart_button" data-id="{{product.id}}" onclick="addToCart(this.getAttribute('data-id'))" data-buttonWork="add">Add To Cart</button>
 				{% endif %}
 			</div>
 
@@ -69,7 +69,7 @@
 			{% for comment in comments %}
 
 				<!-- main comment box  -->
-				<div class="comment_thread" id="cid1">
+				<div class="comment_thread">
 
 					<!-- comment -->
 					<div class="main_comment comment_container">
@@ -82,7 +82,7 @@
 						<div class="comment_text">
 							{{ comment.comment_text }}
 						</div>	
-						<button class="reply_button" data-commentID="{{ comment.id }}"><span><i class="fa fa-comment"></i> Reply</span></button>
+						<button class="reply_button" data-commentID="{{ comment.comment_id }}"><span><i class="fa fa-comment"></i> Reply</span></button>
 
 					</div>
 
@@ -114,9 +114,9 @@
 						</div>
 									
 						<!-- in the end is reply button -->
-						<div class="comment_row reply_row">
+						<div class="comment_row reply_row" id="{{ comment.comment_id }}">
 							<input class="comment_textbox" id="comment_text" contenteditable placeholder="Add a comment .."></input>
-							<submit class="comment_button" role="reply" data-commentID="{{ comment.id }}">Reply</submit>
+							<submit class="comment_button" role="reply" data-commentID="{{ comment.comment_id }}">Reply</submit>
 						</div>
 
 					</div>					
@@ -132,6 +132,57 @@
 		{% endif %}
 
 	</div>
+
+
+	<!-- Comment Model -->
+	<div id="comment_model" class="comment_thread" style="display: none;" >
+
+		<!-- comment -->
+		<div class="main_comment comment_container">
+
+			<div class="user_info">
+				<span class="username"></span>
+				<span class="Date"></span>
+			</div>
+			
+			<div class="comment_text"></div>	
+			<button class="reply_button" data-commentID=""><span><i class="fa fa-comment"></i> Reply</span></button>
+		</div>
+
+	</div>
+
+
+	<!-- Comment Reply Model -->
+	<div id="reply_model" class="comment_container comment_reply" style="display: none;" >
+		<div class="reply_containers">
+
+			{% for reply in comment.replies %}
+
+			<hr>
+
+			<div class="reply_thread">
+				<div class="user_info">
+					<span class="username"> {{reply.user}} </span>
+					<span class="Date"> · {{reply.created_at}} · </span>
+				</div>
+				
+				<div class="comment_text">
+					{{reply.reply_text}}
+				</div>							
+			</div>
+
+			{% endfor %}
+		
+		</div>
+					
+		<!-- in the end is reply button -->
+		<div class="comment_row reply_row">
+			<input class="comment_textbox" id="comment_text" contenteditable placeholder="Add a comment .."></input>
+			<submit class="comment_button" role="reply" data-commentID="{{ comment.id }}">Reply</submit>
+		</div>
+	</div>
+
+
 
 	
 	{% csrf_token %}

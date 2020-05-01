@@ -1,18 +1,27 @@
 function addComment(){
 	
-	var target = event.target
+	const target = event.target
 		
 	if(target.getAttribute("data-buttonWork")=="comment"){
 
-		var post_id = target.getAttribute("data-postID")
+		const post_id = target.getAttribute("data-postID")
 	
-		var parent = event.target.parentNode
+		const parent = event.target.parentNode
 
-		var comment_text_container = parent.querySelector("input#comment_text")
-		comment_text = comment_text_container.value
-		console.log(comment_text)
+		const comment_text_container = parent.querySelector("input#comment_text")
+		const comment_text = comment_text_container.value
+
+		//should go in 
+		let newCommentThread = document.getElementById("comment_model").cloneNode(true)
+		console.log(newCommentThread)
+
+
+		// above 
+		if(comment_text.length == 0 )
+			return 
 
         csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;			
+
 
 		fetch('/products/'+post_id+'/add_comment', {
             method: 'POST',
@@ -22,7 +31,8 @@ function addComment(){
 		.then(res=>{
 			if(res.status == 200){
 				console.log("success")
-				comment_text_container.value = ""
+				comment_text_container.value = ""				
+
 			}
 
 		})

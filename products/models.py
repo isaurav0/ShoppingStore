@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+import json
 
 
 TYPE_CHOICES = (
@@ -52,7 +53,8 @@ class ProductComment(models.Model):
         ordering = ('-created_at',)
 
     def __str__(self):
-        return f'Product: {self.product.title} Comment: {self.comment}'
+        return json.dumps({'comment_id': self.id, 'comment_text': self.comment}
+                          )
 
 
 class ProductCommentReply(models.Model):

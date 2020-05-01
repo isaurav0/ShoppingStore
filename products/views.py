@@ -82,8 +82,6 @@ def register(request):
 def product_filter(request, category):
     _type = request.GET.get('type', 'THC')
     category = category.capitalize()
-    print(category)
-    print(_type)
     existing = Product.objects.filter(
         product_category=category,
         # product_type=_type
@@ -135,7 +133,6 @@ def product_detail(request, product_id):
             }
             comment_dict['replies'].append(reply_dict)
         comments.append(comment_dict)
-    print(comments)
 
     params = {
         'product': product,
@@ -204,7 +201,6 @@ def remove_from_cart(request, product_id):
 @login_required
 def add_comment(request, product_id):
     if request.method == "POST":
-        print("Product_id is: ", product_id)
 
         product = Product.objects.get(
             pk=product_id,
@@ -223,8 +219,11 @@ def add_comment(request, product_id):
             comment=comment
         )
 
-        print("successfully saved comment")
-        return JsonResponse({"message": "success"}, status=200)
+        response = json.loads(response)
+        comment_id = response['comment_id']
+        comment_text = response['comment_text']
+
+        return JsonResponse({"comment_id": comment_id}, status=200)
 
     return JsonResponse({"message": "Not Found"}, status=404)
 
