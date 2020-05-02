@@ -16,7 +16,7 @@ Apr 30 11:29pm
 May 02 2:57 pm 
 	Things can get pretty ugly when creating elements dynamically with javascript. Especially when the element is nested deeply. I can see now why people use frameworks like React.js and Vue.js. At least I learnt the use case of these frameworks and can choose wisely where to use them and where not. I actually feel like crying having to set attributes of children nested deep inside. If I was using react I could have made it a single component and maybe a parent would have a attribute and all of its children would inherit or maybe they wouldn't even need to. Since it was almost impossible to create each elements, I created a model like html element with `display`: `none` that looks somewhat like this. 
 
-```
+```html
 	<!-- Comment Model -->
 	<div id="comment_model" class="comment_thread" style="display: none;" >
 
@@ -47,7 +47,7 @@ May 02 2:57 pm
 
 	</div>
 ```
-	I had to create this element just to use for javascript. That is a sad thing to do. Then, I clone this element on javascript. I have to set innerHTML and attributes of each element using querySelector(). If I had been using react I would have comment_model a separate tag like <CommentModel> and set all needed attributes like <CommentModel id="comment_model">. And I could reuse its value in all of its child components with ease. And if I needed more comment field I could use <CommentMode> tag again anywhere. GOD, vanilla js can get trippy in handling such stuffs. I should definitely extend my skillset with React. 
+	I had to create this element just to use for javascript. That is a sad thing to do. Then, I clone this element on javascript. I have to set innerHTML and attributes of each element using querySelector(). If I had been using react I would have comment_model a separate tag like <CommentModel> and set all needed attributes like <CommentModel id="comment_model">. And I could reuse its value in all of its child components with ease. And if I needed more comment field I could use <CommentMode> tag again anywhere. Vanilla js can get trippy in handling such stuffs. I should definitely use reactjs for such stuffs. 
 
 
 May 2 6:36 pm
