@@ -56,4 +56,6 @@ And if I needed more comment field I could use <CommentMode> tag again anywhere.
 &nbsp;   
 
 May 2 6:36 pm.  
-	It is sad to know that keypress events cannot be delegated unlike mouse events. But it makes sense. You have to attach event listeners to every newborn element dynamically created.
+	It is sad to know that keypress events cannot be delegated unlike mouse events. But it makes sense. You have to attach event listeners to every newborn element dynamically created.  
+	
+
