@@ -2,7 +2,8 @@ Apr 30 11:29pm
 	From my experience in previous project, I have found out that editable div does much better job at taking long paragraph inputs
 	than textarea and input tag. Advantages of making editable div over textarea is proper rendering of escape sequence characters in editable field without having to replace `<br>` tag with "\n". To make a div editable, add a property 
 	contenteditable to div element.
-	`<div contenteditable>` and that will do it.  
+	`<div contenteditable>` and that will do it.   
+
 	We can set div's overflow property to scrollable for better viewing. So, suggestion to myself, 
 	choose editable div anyday over textarea and input tags to get rid of headaches.  	
 	Another cool stuff I learnt is, when you add float property to child elements of a parent, height of parent 
@@ -50,4 +51,5 @@ May 02 2:57 pm
 
 
 May 2 6:36 pm
+
 	It is sad to know that keypress events cannot be delegated unlike mouse events. But it makes sense. You have to attach event listeners to every newborn element dynamically created.
