@@ -3,7 +3,6 @@ Apr 30 11:29pm
 	than textarea and input tag. Advantages of making editable div over textarea is proper rendering of escape
 	sequence characters in editable field without having to replace <br> tag with "\n". To make a div editable, add a property 
 	contenteditable to div element. 
-
 	<div contenteditable> and that will do it.
 
 	We can set div's overflow property to scrollable for better viewing. So, suggestion to myself, 
