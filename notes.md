@@ -48,12 +48,12 @@ May 02 2:57 pm.
 
 	</div>
 ```  
-	&nbsp; 
-	I had to create this element to make it act like a template for creating new elements dynamically. That is a sad thing to do. I have to set innerHTML and attributes of each element using querySelector().  
-	If I had been using react I would have comment_model a separate tag like <CommentModel> and set all needed attributes like <CommentModel id="comment_model">. And I could reuse its value in all of its child components with ease.  
-	And if I needed more comment field I could use <CommentMode> tag again anywhere. Vanilla js can get trippy in handling such stuffs. I should definitely use reactjs for such stuffs.  
-	&nbsp;   
-	&nbsp;   
+&nbsp; 
+I had to create this element to make it act like a template for creating new elements dynamically. That is a sad thing to do. I have to set innerHTML and attributes of each element using querySelector().  
+If I had been using react I would have comment_model a separate tag like <CommentModel> and set all needed attributes like <CommentModel id="comment_model">. And I could reuse its value in all of its child components with ease.  
+And if I needed more comment field I could use <CommentMode> tag again anywhere. Vanilla js can get trippy in handling such stuffs. I should definitely use reactjs for such stuffs.  
+&nbsp;   
+&nbsp;   
 
 May 2 6:36 pm.  
 	It is sad to know that keypress events cannot be delegated unlike mouse events. But it makes sense. You have to attach event listeners to every newborn element dynamically created.
