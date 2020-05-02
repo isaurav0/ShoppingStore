@@ -68,9 +68,7 @@
 
 				<!-- main comment box  -->
 				<div class="comment_thread"> <!-- delegate click event to activate reply field -->
-
-					<!-- <h1>{{comment.comment_id}}</h1> -->
-
+	
 					<!-- comment -->
 					<div class="main_comment comment_container">
 
@@ -152,7 +150,7 @@
 
 			<!-- in the end is reply button -->
 			<div class="comment_row reply_row" id="">	<!-- add id dynamically here comment_id-->
-				<input class="comment_textbox" contenteditable placeholder="Add a comment .."></input>
+				<input class="comment_textbox" contenteditable placeholder="Add a comment .." onkeyup="listenEnter(event)"></input>
 				<submit class="comment_button" role="reply" data-commentID="">Reply</submit>
 			</div>
 		</div>

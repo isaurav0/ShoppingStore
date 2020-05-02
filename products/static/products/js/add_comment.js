@@ -63,9 +63,11 @@ function addComment(){
 var comment_boxes =  document.querySelectorAll("input.comment_textbox")
 
 comment_boxes.forEach(box=>{
-	box.addEventListener("keyup", function(event){
-		if(event.keyCode === 13){
-			box.parentNode.querySelector("submit.comment_button").click();
-		}
-	})
+	box.addEventListener("keyup", listenEnter)
 })
+
+function listenEnter(event){
+	if(event.keyCode === 13){
+		event.target.parentNode.querySelector("submit.comment_button").click();
+	}
+}
