@@ -53,8 +53,9 @@ class ProductComment(models.Model):
         ordering = ('-created_at',)
 
     def __str__(self):
-        return json.dumps({'comment_id': self.id, 'comment_text': self.comment}
-                          )
+        return json.dumps({"comment_id": "%d" % self.id, "comment_text": "%s" %
+                          self.comment, "created_at": self.created_at.strftime(
+                            "%b %-d, %Y, %-I:%-M %p").lower()})
 
 
 class ProductCommentReply(models.Model):
@@ -65,7 +66,9 @@ class ProductCommentReply(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ('-created_at',)
+        ordering = ('created_at',)
 
     def __str__(self):
-        return self.comment.comment
+        return json.dumps({"reply_text": self.reply, "created_at":
+                          self.created_at.strftime("%b %-d, %Y, %-I:%-M %p").
+                          lower()})

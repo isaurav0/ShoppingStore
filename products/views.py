@@ -118,7 +118,7 @@ def product_detail(request, product_id):
     comments = []
     for comment in ProductComment.objects.filter(product=product):
         comment_dict = {
-            'commend_id': comment.id,
+            'comment_id': comment.id,
             'comment_text': comment.comment,
             'user': comment.user,
             'created_at': comment.created_at,
@@ -219,11 +219,14 @@ def add_comment(request, product_id):
             comment=comment
         )
 
-        response = json.loads(response)
+        response = json.loads(str(response))
         comment_id = response['comment_id']
         comment_text = response['comment_text']
+        created_at = response['created_at']
 
-        return JsonResponse({"comment_id": comment_id}, status=200)
+        return JsonResponse({"comment_id": comment_id, "comment_text":
+                            comment_text, "created_at": created_at}, status=200
+                            )
 
     return JsonResponse({"message": "Not Found"}, status=404)
 
@@ -239,7 +242,7 @@ def comment_reply(request, comment_id):
     if request.method == "POST":
         # Read comment from UI
         response = json.loads(request.body)
-        reply = response["reply"]
+        reply = response["reply_text"]
 
         # Add reply
         response = ProductCommentReply.objects.create(
@@ -247,6 +250,11 @@ def comment_reply(request, comment_id):
             user=request.user,
             reply=reply
         )
-        return JsonResponse({"message": "success"}, status=200)
+
+        response = json.loads(str(response))
+        reply_text = response['reply_text']
+        created_at = response['created_at']
+
+        return JsonResponse({"reply_text": reply_text, "created_at": created_at}, status=200)
 
     return render(request, "products/add_comment.html", {'item': item})

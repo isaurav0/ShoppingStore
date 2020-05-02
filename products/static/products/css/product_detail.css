@@ -183,9 +183,15 @@
 
 .reply_row{
 	display: none;
+	margin-left: 5em;
+	width: auto;
 }
 
 .reply_thread{
 	margin-bottom: 5px; 
 	margin-left: 5em;
+}
+
+#reply_model{
+	display: none;
 }

@@ -62,14 +62,14 @@
 			<submit class="comment_button" data-buttonWork="comment" data-postID="{{product.id}}">Comment</submit>
 		</div>
 
-		{% if comments %}
-
-		<div class="previous_comments">	
+		<div class="previous_comments" id = "previous_comments" onclick="activateReplyField()">	
 
 			{% for comment in comments %}
 
 				<!-- main comment box  -->
-				<div class="comment_thread">
+				<div class="comment_thread"> <!-- delegate click event to activate reply field -->
+
+					<!-- <h1>{{comment.comment_id}}</h1> -->
 
 					<!-- comment -->
 					<div class="main_comment comment_container">
@@ -82,15 +82,13 @@
 						<div class="comment_text">
 							{{ comment.comment_text }}
 						</div>	
-						<button class="reply_button" data-commentID="{{ comment.comment_id }}"><span><i class="fa fa-comment"></i> Reply</span></button>
+						<button class="reply_button" data-commentID="{{ comment.comment_id }}" data-buttonWork="addReplyField"><span><i class="fa fa-comment"></i> Reply</span></button>
 
 					</div>
 
 					<!-- reply -->
 
-					{% if comment.replies %}
-
-					<div class="comment_container comment_reply">
+					<div class="comment_container comment_reply" onclick="addReply()">
 
 						<div class="reply_containers">
 
@@ -115,13 +113,12 @@
 									
 						<!-- in the end is reply button -->
 						<div class="comment_row reply_row" id="{{ comment.comment_id }}">
-							<input class="comment_textbox" id="comment_text" contenteditable placeholder="Add a comment .."></input>
+							<hr>
+							<input class="comment_textbox" contenteditable placeholder="Add a comment .."></input>
 							<submit class="comment_button" role="reply" data-commentID="{{ comment.comment_id }}">Reply</submit>
 						</div>
 
 					</div>					
-
-					{% endif %}
 
 				</div>
 
@@ -129,65 +126,62 @@
 
 		</div>
 
-		{% endif %}
-
 	</div>
 
 
 	<!-- Comment Model -->
-	<div id="comment_model" class="comment_thread" style="display: none;" >
+	<div id="comment_model" class="comment_thread" style="display: none;">
 
 		<!-- comment -->
 		<div class="main_comment comment_container">
 
 			<div class="user_info">
 				<span class="username"></span>
-				<span class="Date"></span>
+				<span class="date"></span>
 			</div>
 			
 			<div class="comment_text"></div>	
-			<button class="reply_button" data-commentID=""><span><i class="fa fa-comment"></i> Reply</span></button>
+			<button class="reply_button" data-commentID="" data-buttonWork="addReplyField"><span><i class="fa fa-comment"></i> Reply</span></button>
+		</div>
+
+		<div class="comment_reply comment_container" onclick="addReply()">
+			<div class="reply_containers">
+				<!-- Comment Reply Model comes here -->
+
+			</div>
+
+			<!-- in the end is reply button -->
+			<div class="comment_row reply_row" id="">	<!-- add id dynamically here comment_id-->
+				<input class="comment_textbox" contenteditable placeholder="Add a comment .."></input>
+				<submit class="comment_button" role="reply" data-commentID="">Reply</submit>
+			</div>
 		</div>
 
 	</div>
 
 
 	<!-- Comment Reply Model -->
-	<div id="reply_model" class="comment_container comment_reply" style="display: none;" >
-		<div class="reply_containers">
-
-			{% for reply in comment.replies %}
+		<div id="reply_model">
 
 			<hr>
 
-			<div class="reply_thread">
+			<div class="reply_thread" >
 				<div class="user_info">
-					<span class="username"> {{reply.user}} </span>
-					<span class="Date"> · {{reply.created_at}} · </span>
+					<span class="username"> </span>
+					<span class="date"> </span>
 				</div>
 				
 				<div class="comment_text">
-					{{reply.reply_text}}
 				</div>							
 			</div>
 
-			{% endfor %}
+		</div>
 		
-		</div>
-					
-		<!-- in the end is reply button -->
-		<div class="comment_row reply_row">
-			<input class="comment_textbox" id="comment_text" contenteditable placeholder="Add a comment .."></input>
-			<submit class="comment_button" role="reply" data-commentID="{{ comment.id }}">Reply</submit>
-		</div>
-	</div>
-
-
-
-	
+							
 	{% csrf_token %}
 
 	<script src="{% static 'products/js/add_to_cart.js' %}"></script>
 	<script src="{% static 'products/js/add_comment.js' %}"></script>
+	<script src="{% static 'products/js/add_reply.js' %}"></script>
 
 {% endblock %}
