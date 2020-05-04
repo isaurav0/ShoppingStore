@@ -1,7 +1,7 @@
 function addToCart(id){
 	var csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-	let buttonWork = event.target.getAttribute("data-buttonWork")
 	var target = event.target
+	let buttonWork = target.getAttribute("data-buttonWork")	
 
 	if(buttonWork=="add"){
         fetch('/products/add_to_cart/'+id, {
@@ -9,31 +9,30 @@ function addToCart(id){
             headers: {'X-CSRFToken': csrftoken},	          
           })
 			.then(res=>{
-				if(res.status == 200){
+				if(res.status === 200){
 					target.className = "cart_button added"
 					target.setAttribute("data-buttonWork", "remove")
-					target.innerHTML = "Remove From Cart"
+					target.innerHTML = "Already in cart"	
+					target.setAttribute("disabled", true)
 				}
-				return res.json()						
-			})				
+				if(res.status === 401){
+					window.location.href = "/login"
+				}
+			})
 	}
 
-	else{
-		
+	if(buttonWork=="remove"){
 		fetch('/products/remove_from_cart/'+id, {
             method: 'POST',
             headers: {'X-CSRFToken': csrftoken},	          
           })
 			.then(res=>{
-				if(res.status == 200){
-					target.className = "cart_button"	
-					target.setAttribute("data-buttonWork", "add")	
-					target.innerHTML = "Add To Cart"					
+				if(res.status === 200){
+					window.location.reload()		
 				}
-				return res.json()						
-			})
-			.then(res=>{
-				return 
+				if(res.status === 401){
+					window.location.href = "/login"
+				}
 			})
 	}
 }

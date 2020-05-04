@@ -1,13 +1,14 @@
 checkAge()
                         
 function setAge(value){
-    window.localStorage.setItem("AgeOkay", value==1 ? true : false)
+    window.sessionStorage.setItem("AgeOkay", value==1 ? true : false)
     checkAge()
 }
 
 function checkAge(){
+    console.log("checking")
 
-    let AgeOkay = window.localStorage.getItem("AgeOkay")
+    let AgeOkay = window.sessionStorage.getItem("AgeOkay")
     let ageGate = document.getElementById("age-gate")
     // let content = document.getElementById("content")
     let body = document.getElementById("body")

@@ -34,7 +34,7 @@
 }
 
 #body{
-	display: block;
+	display: none;
     top: 100px;
     position: absolute;
     width: 100%;

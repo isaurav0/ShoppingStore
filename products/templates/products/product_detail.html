@@ -19,7 +19,7 @@
 				<img src="{{ product.image_url }}" class="product_image">
 
 				{% if in_cart %}
-					<button class="cart_button added" data-id="{{product.id}}" onclick="addToCart(this.getAttribute('data-id'))" data-buttonWork="remove">Remove From Cart</button>
+					<button class="cart_button added" data-id="{{product.id}}" onclick="addToCart(this.getAttribute('data-id'))" data-buttonWork="remove" disabled>Already in cart</button>
 				{% else %}
 					<button class="cart_button" data-id="{{product.id}}" onclick="addToCart(this.getAttribute('data-id'))" data-buttonWork="add">Add To Cart</button>
 				{% endif %}
@@ -159,22 +159,21 @@
 
 
 	<!-- Comment Reply Model -->
-		<div id="reply_model">
+	<div id="reply_model">
 
-			<hr>
+		<hr>
 
-			<div class="reply_thread" >
-				<div class="user_info">
-					<span class="username"> </span>
-					<span class="date"> </span>
-				</div>
-				
-				<div class="comment_text">
-				</div>							
+		<div class="reply_thread" >
+			<div class="user_info">
+				<span class="username"> </span>
+				<span class="date"> </span>
 			</div>
-
+			
+			<div class="comment_text">
+			</div>							
 		</div>
-		
+
+	</div>		
 							
 	{% csrf_token %}
 

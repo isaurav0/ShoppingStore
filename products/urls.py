@@ -11,6 +11,8 @@ urlpatterns = [
     path("register", views.register, name="register"),
     path("medical", views.main_product_view, name="medical"),
     path("recreational", views.main_product_view, name="recreational"),
+    path('products/my_cart_info', views.my_cart_info,
+         name='my_cart_info'),
     path('products/<str:category>',
          views.product_filter, name='product_filter'),
     path('products/detail/<int:product_id>',
@@ -22,5 +24,5 @@ urlpatterns = [
     path('products/<int:product_id>/add_comment',
          views.add_comment, name='add_comment'),
     path('products/comments/<int:comment_id>/comment_reply',
-         views.comment_reply, name='comment_reply')
+         views.comment_reply, name='comment_reply'),
 ]

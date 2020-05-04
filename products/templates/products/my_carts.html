@@ -1,0 +1,50 @@
+{% extends "products/layout.html" %}
+
+{% load static %}
+{% block title %}
+  My Cart
+{% endblock %}
+{% block body %}
+
+	<link href="{% static 'products/css/cart_style.css' %}" rel="stylesheet">
+	<link href="{% static 'products/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+
+	<div class="items_container">
+		{% for cart in carts %}
+
+			<div class="items">
+
+				<div class="item_image item_detail">
+					<img src="{{cart.product.image_url}}">
+				</div>
+
+				<div class="item_title item_detail">
+					{{cart.product.title}}
+					<div class="item_subtitle">
+						<span>{{ cart.product.product_category }}</span>	
+						<span>{{ cart.product.product_type }}</span>	
+					</div>
+				</div>
+
+				<div class="item_quantity item_detail">
+					<input type="" name="" value="{{cart.quantity}}">
+				</div>
+
+				<div class="delete_item item_detail">
+					<i class="fa fa-trash" data-id="{{cart.product.id}}" onclick="addToCart(this.getAttribute('data-id'))" data-buttonWork="remove"></i>
+				</div>
+
+			</div>
+
+		{% endfor %}
+
+	</div>
+
+	<div class="checkout_container">
+		
+
+	</div>
+	{% csrf_token %}
+
+	<script src="{% static 'products/js/add_to_cart.js' %}"></script>
+{% endblock %}	

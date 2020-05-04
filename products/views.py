@@ -15,7 +15,6 @@ def search_by_category(request, category):
     return index(request, category=category)
 
 
-@login_required
 def index(request):
     return render(
         request,
@@ -78,7 +77,6 @@ def register(request):
         return render(request, "products/register.html")
 
 
-@login_required
 def product_filter(request, category):
     _type = request.GET.get('type', 'THC')
     category = category.capitalize()
@@ -92,7 +90,6 @@ def product_filter(request, category):
     return render(request, "products/category.html", params)
 
 
-@login_required
 def main_product_view(request):
     url_name = resolve(request.path).url_name
     params = {
@@ -101,7 +98,6 @@ def main_product_view(request):
     return render(request, "products/choose.html", params)
 
 
-@login_required
 def product_detail(request, product_id):
     try:
 
@@ -111,10 +107,12 @@ def product_detail(request, product_id):
     except Product.DoesNotExist:
         return JsonResponse({"message": "Product Not Found"}, status=404)
 
-    existing_cart = ProductCart.objects.filter(product=product)
     in_cart = False
-    if existing_cart:
-        in_cart = True
+    if request.user.is_authenticated:
+        existing_cart = ProductCart.objects.filter(
+                        product=product, user=request.user)
+        if existing_cart:
+            in_cart = True
     comments = []
     for comment in ProductComment.objects.filter(product=product):
         comment_dict = {
@@ -142,61 +140,75 @@ def product_detail(request, product_id):
     return render(request, "products/product_detail.html", params)
 
 
-@login_required
 def add_to_cart(request, product_id):
-    if request.method == "POST":
-        try:
-            product = Product.objects.get(
-                pk=product_id,
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            try:
+                product = Product.objects.get(
+                    pk=product_id,
+                )
+            except Product.DoesNotExist:
+                return JsonResponse({"message": "Product Not Found"}, status=404)
+
+            existing_cart = ProductCart.objects.filter(product=product)
+            if existing_cart:
+                return JsonResponse({
+                    "message": "Product alreay in cart"}, status=400)
+            response = ProductCart.objects.create(
+                user=request.user,
+                product=product,
             )
-        except Product.DoesNotExist:
-            return JsonResponse({"message": "Product Not Found"}, status=404)
+            # #Return to home page
+            message = "Successfully added to cart."
+            return JsonResponse({"message": message}, status=200)
 
-        existing_cart = ProductCart.objects.filter(product=product)
-        if existing_cart:
-            return JsonResponse({
-                "message": "Product alreay in cart"}, status=400)
-        response = ProductCart.objects.create(
-            user=request.user,
-            product=product,
-        )
-        # #Return to home page
-        message = "Successfully added to cart."
-        return JsonResponse({"message": message}, status=200)
+        else:
+            message = "GET request handler not found"
+            return JsonResponse({"message": message}, status=404)
 
-    else:
-        message = "GET request handler not found"
-        return JsonResponse({"message": message}, status=404)
+    return JsonResponse({"message": "Not Authorized"}, status=401)
 
 
 @login_required
 def remove_from_cart(request, product_id):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            try:
+                product = Product.objects.get(
+                    pk=product_id,
+                )
+            except Product.DoesNotExist:
+                return JsonResponse({"message": "Product Not Found"}, status=404)
+            try:
+                # Delete cart entry
+                existing = ProductCart.objects.get(
+                    user_id=request.user,
+                    product=product,
+                )
+                existing.delete()
+                # #Return to home page
+                message = "Successfully removed from cart."
+                return JsonResponse({"message": message}, status=200)
+            except ProductCart.DoesNotExist:
+                message = "ERROR: Can't remove from cart"
+                return JsonResponse({"message": message}, status=400)
 
-    if request.method == "POST":
-        try:
-            product = Product.objects.get(
-                pk=product_id,
-            )
-        except Product.DoesNotExist:
-            return JsonResponse({"message": "Product Not Found"}, status=404)
-        try:
-            # Delete cart entry
-            existing = ProductCart.objects.get(
-                user_id=request.user,
-                product=product,
-            )
-            existing.delete()
-            # #Return to home page
-            message = "Successfully removed from cart."
-            return JsonResponse({"message": message}, status=200)
-        except ProductCart.DoesNotExist:
-            message = "ERROR: Can't remove from cart"
-            return JsonResponse({"message": message}, status=400)
+        else:
+            message = "GET request handler not found"
+            return JsonResponse({"message": message}, status=404)
 
-    else:
-        message = "GET request handler not found"
-        return JsonResponse({"message": message}, status=404)
+    return JsonResponse({"message": "Not Authorized"}, status=401)
 
+
+@login_required
+def my_cart_info(request):
+    carts = ProductCart.objects.filter(
+        user=request.user,
+    )
+    params = {
+        'carts': carts
+    }
+    return render(request, "products/my_carts.html", params)
 
 @login_required
 def add_comment(request, product_id):

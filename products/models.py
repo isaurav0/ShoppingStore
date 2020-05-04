@@ -37,9 +37,17 @@ class Product(models.Model):
         return self.title
 
 
-class ProductCart(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+class Order(models.Model):
+    order_date = models.DateTimeField(auto_now_add=True)
+    address = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
+class ProductCart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.DO_NOTHING, blank=True, null=True, default=None)
+    quantity = models.IntegerField(default=1)
 
 
 class ProductComment(models.Model):

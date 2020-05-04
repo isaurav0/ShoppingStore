@@ -1,0 +1,44 @@
+.items_container{
+	margin: 10px;
+	/*border: 1px solid gray;*/
+	padding: 10px;
+	width: 60%;
+}
+
+.items{
+	border: 1px solid gray;
+	margin: 10px;
+	padding: 10px;	
+}
+
+.item_image img{
+	width: 100px;
+	height: 100px;
+}
+
+.item_detail{
+	display: inline-block;
+	margin: 10px;
+}
+
+.item_quantity input{
+	width: 30%;
+}
+
+.item_title{
+	min-width: 40%;
+	font-size: 1.2em;
+}
+
+.delete_item i{
+	width: 20%;
+	font-size: 2em;
+	margin-left: 30px;
+	cursor: pointer;
+}
+
+.item_subtitle span{
+	color: rgb(150,150,150);
+	margin-left: 5px;
+	font-size: 0.8em;
+}

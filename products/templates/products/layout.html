@@ -35,9 +35,17 @@
 
                         {% if user.is_authenticated %}            
 
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'my_cart_info' %}">My Cart</a>
+                            </li>
+
+
                             <li class="nav-item">
                                     <strong class="nav-link" id="username">{{ user.username }}</strong>
                             </li>
+
+                            
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
@@ -51,12 +59,8 @@
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'register' %}">Register</a>
-                            </li>
-
-                            <!-- clear local Storage to confirm age after every login -->
-                            <script>
-                                window.localStorage.clear()                
-                            </script>                
+                            </li>                    
+                        
 
                         {% endif %}                    
                     </ul>
@@ -70,8 +74,6 @@
                         
         </div>            
 
-        {% if user.is_authenticated %}
-            <script src="{% static 'products/js/age_check.js' %}"></script>
-        {% endif %}   
+        <script src="{% static 'products/js/age_check.js' %}"></script>
     </body>
 </html>
