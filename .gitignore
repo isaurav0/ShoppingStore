@@ -1,2 +1,9 @@
 *.pyc
-*.pyo
+
+__ pycache __
+
+db.sqlite3
+
+.DS_Store
+
+
