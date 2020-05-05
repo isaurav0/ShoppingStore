@@ -6,9 +6,12 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse, resolve
 from .models import User, Product, ProductCart,\
-    ProductComment, ProductCommentReply
+        ProductComment, ProductCommentReply, Order
+
 
 import json
+import random
+import string
 
 
 def search_by_category(request, category):
@@ -178,7 +181,10 @@ def remove_from_cart(request, product_id):
                     pk=product_id,
                 )
             except Product.DoesNotExist:
-                return JsonResponse({"message": "Product Not Found"}, status=404)
+                return JsonResponse({
+                    "message": "Product Not Found"},
+                    status=404
+                )
             try:
                 # Delete cart entry
                 existing = ProductCart.objects.get(
@@ -209,6 +215,65 @@ def my_cart_info(request):
         'carts': carts
     }
     return render(request, "products/my_carts.html", params)
+
+
+def test_product_info():
+    return [{
+        'id': 1,
+        'title': 'PEACH BELLINI Sour THC',
+        'category': 'Sour',
+        'type': 'THC',
+        'quantity': 3,
+        }, {
+        'id': 4,
+        'title': 'STRAWBERRY LEMONADE 1:1 Spicy THC (MED)',
+        'category': 'Spicy',
+        'type': 'THC',
+        'quantity': 10,
+    }]
+
+
+@login_required
+def place_order(request):
+    if request.method == 'POST':
+        response = json.loads(request.body)
+        products = response["products"]
+        address = response["address"]
+        fullname = response["fullname"]
+
+        order_detail = list()
+        cart_ids = list()
+        for info in products:
+            cart_ids.append(info['id'])
+            title = info['title']
+            category = info['category']
+            _type = info['type']
+            quantity = info['quantity']
+            order_detail.append(
+                f'Product: {title}; Category: {category}; Type: {_type}; '
+                f'Quantity: {quantity}'
+            )
+        order_detail = '\n'.join(order_detail)
+        order_id = ''.join(
+            random.choices(string.ascii_uppercase + string.digits, k=16))
+        response = Order.objects.create(
+            user=request.user,
+            address=address,
+            order_detail=order_detail,
+            order_id=order_id,
+            fullname=fullname
+        )
+        print(response)
+        existing_carts = ProductCart.objects.filter(pk__in=cart_ids)
+        for cart in existing_carts:
+            cart.order = response
+            cart.save()
+        params = {
+            'carts': existing_carts
+        }
+        return render(request, "products/my_carts.html", params)
+
+
 
 @login_required
 def add_comment(request, product_id):

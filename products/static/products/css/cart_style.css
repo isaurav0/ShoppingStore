@@ -1,14 +1,22 @@
+.page{
+	width: 100%;
+	display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-end;
+}
+
 .items_container{
 	margin: 10px;
-	/*border: 1px solid gray;*/
-	padding: 10px;
+	/*padding: 10px;*/
 	width: 60%;
 }
 
 .items{
-	border: 1px solid gray;
+	border: 1px solid rgb(240,240,240);
 	margin: 10px;
-	padding: 10px;	
+	padding: 10px;
+	background-color: rgb(250,250,250);
 }
 
 .item_image img{
@@ -21,24 +29,82 @@
 	margin: 10px;
 }
 
+.item_quantity{
+	width: 10%;
+	text-align: center;
+	color: gray;
+}
+
 .item_quantity input{
-	width: 30%;
+	width: 3em;
 }
 
 .item_title{
-	min-width: 40%;
+	min-width: 35%;
 	font-size: 1.2em;
 }
 
-.delete_item i{
-	width: 20%;
+.delete_item{
+	width: 8%;
 	font-size: 2em;
-	margin-left: 30px;
+	float: right;
 	cursor: pointer;
+	color: #5bc0de;
+	padding: 5px;
+	/*border: 1px solid black;*/
 }
+
+
+.delete_item i:hover {
+	cursor: pointer;
+	color: black;
+}
+
 
 .item_subtitle span{
 	color: rgb(150,150,150);
 	margin-left: 5px;
 	font-size: 0.8em;
 }
+
+
+.order_container{
+	/*border: 1px solid black;*/
+	float: right;
+	width: 35%;
+	margin: 10px;
+	padding-top: 0px;
+	background-color: rgb(250,250,250);
+	border: 1px solid rgb(240,240,240);
+
+}
+
+.order_header{
+	text-align: center;
+	font-size: 30px;
+	padding-left: 5%;
+	padding-right: 5%;
+	background-color: #5bc0de;
+	color: #f7f7f7;
+}
+
+.address_container, .fullname_container{
+	margin: 10px;
+	padding: 10px;
+	font-size: 22px;
+}
+
+.place_order{
+	border: none;
+	margin: 10px;
+	text-align: center;
+}
+
+#place_order{
+	background-color: #f0ad4e;
+	color: #f7f7f7;
+	border: none;
+	padding: 10px;
+}
+
+

@@ -57,9 +57,14 @@
 
 		<div class="comment_title"><b> Comments </b></div>
 		<hr>
+
 		<div class="comment_row" onclick="addComment()">
 			<input class="comment_textbox" id="comment_text" contenteditable placeholder="Add a comment .."></input>
+			{% if user.is_authenticated %}
 			<submit class="comment_button" data-buttonWork="comment" data-postID="{{product.id}}">Comment</submit>
+			{% else %}
+			<submit class="comment_button" data-buttonWork="comment" onclick="window.location.href='/login';">Comment</submit>
+			{% endif %}
 		</div>
 
 		<div class="previous_comments" id = "previous_comments" onclick="activateReplyField()">	
@@ -80,8 +85,9 @@
 						<div class="comment_text">
 							{{ comment.comment_text }}
 						</div>	
+						{% if user.is_authenticated %}
 						<button class="reply_button" data-commentID="{{ comment.comment_id }}" data-buttonWork="addReplyField"><span><i class="fa fa-comment"></i> Reply</span></button>
-
+						{% endif %}
 					</div>
 
 					<!-- reply -->
@@ -139,7 +145,9 @@
 			</div>
 			
 			<div class="comment_text"></div>	
+			{% if user.is_authenticated %}
 			<button class="reply_button" data-commentID="" data-buttonWork="addReplyField"><span><i class="fa fa-comment"></i> Reply</span></button>
+			{% endif %}
 		</div>
 
 		<div class="comment_reply comment_container" onclick="addReply()">

@@ -12,8 +12,9 @@ function addToCart(id){
 				if(res.status === 200){
 					target.className = "cart_button added"
 					target.setAttribute("data-buttonWork", "remove")
-					target.innerHTML = "Already in cart"	
+					target.innerHTML = "Added to cart"	
 					target.setAttribute("disabled", true)
+					window.location.href = "/products/my_cart_info"
 				}
 				if(res.status === 401){
 					window.location.href = "/login"

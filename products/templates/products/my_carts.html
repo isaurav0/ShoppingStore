@@ -9,42 +9,85 @@
 	<link href="{% static 'products/css/cart_style.css' %}" rel="stylesheet">
 	<link href="{% static 'products/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
 
-	<div class="items_container">
-		{% for cart in carts %}
+	<meta id="cart_data" data-carts="{{carts}}">
 
-			<div class="items">
+	{% if carts %}
+	<div class="page" id="page">
+		<div class="items_container">
+			{% for cart in carts %}
 
-				<div class="item_image item_detail">
-					<img src="{{cart.product.image_url}}">
-				</div>
+				<div class="items" id="{{ cart.id }}">
 
-				<div class="item_title item_detail">
-					{{cart.product.title}}
-					<div class="item_subtitle">
-						<span>{{ cart.product.product_category }}</span>	
-						<span>{{ cart.product.product_type }}</span>	
+					<div class="item_image item_detail">
+						<img src="{{cart.product.image_url}}">
 					</div>
+
+					<div class="item_detail">
+
+						<div class="item_title">
+							{{cart.product.title}}
+						</div>
+						
+						<div class="item_subtitle">
+							<span class="category">{{ cart.product.product_category }}</span>	
+							<span class="type">{{ cart.product.product_type }}</span>	
+						</div>
+					</div>
+
+					<div class="item_quantity item_detail">
+						<span class="label"> Quantity</span> <br>
+						<input type="text" name="quantity" value="{{cart.quantity}}" class="quantity">
+					</div>
+
+					<div class="delete_item item_detail">
+						<i class="fa fa-trash" data-id="{{cart.product.id}}" onclick="addToCart(this.getAttribute('data-id'))" data-buttonWork="remove"></i>
+					</div>
+
 				</div>
 
-				<div class="item_quantity item_detail">
-					<input type="" name="" value="{{cart.quantity}}">
+			{% endfor %}		
+
+		</div>
+
+		{% if carts %}
+
+			<div class="order_container">
+				<div class="order_header">
+					Order details
 				</div>
 
-				<div class="delete_item item_detail">
-					<i class="fa fa-trash" data-id="{{cart.product.id}}" onclick="addToCart(this.getAttribute('data-id'))" data-buttonWork="remove"></i>
+				<div class="fullname_container">
+					<span style="color: gray;"><b>Full Name : </b></span><span><input type="text" name="fullname" id="fullname"></span>
+				</div>
+
+				<div class="address_container">
+					<span style="color: gray;"><b>Address &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </b></span><span><input type="text" name="address" id="address"></span>
+				</div>
+
+				<div class="place_order">
+					<button id="place_order" onclick="placeOrder()"> Place Order </button>
 				</div>
 
 			</div>
 
-		{% endfor %}
+		{% endif %}
 
 	</div>
 
-	<div class="checkout_container">
-		
+	<div id="success" class="loginbox container col-md-4 col-md-offset-3" style="display: none;">
+   		<h3>Order Successful </h3>
+   	</div>
 
-	</div>
+   	{% else %}
+
+	   	<div id="empty" class="loginbox container col-md-4 col-md-offset-3">
+	   		<h3>Cart is Empty </h3>
+	   	</div>
+
+   	{% endif %}
+	
 	{% csrf_token %}
 
 	<script src="{% static 'products/js/add_to_cart.js' %}"></script>
+	<script src="{% static 'products/js/place_order.js' %}"></script>
 {% endblock %}	

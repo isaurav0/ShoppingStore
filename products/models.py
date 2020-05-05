@@ -13,6 +13,13 @@ CATEGORY_CHOICES = (
     ('Spicy', 'Spicy')
 )
 
+STATE_CHOICES = (
+    ('Active', 'Active'),
+    ('Completed', 'Completed'),
+    ('Frozen', 'Frozen')
+)
+
+
 
 class User(AbstractUser):
     description = models.CharField(max_length=100, blank=False, default='')
@@ -38,16 +45,27 @@ class Product(models.Model):
 
 
 class Order(models.Model):
-    order_date = models.DateTimeField(auto_now_add=True)
-    address = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    order_id = models.CharField(max_length=16)
+    fullname = models.CharField(max_length=100)
+    address = models.CharField(max_length=100)
+    order_detail = models.TextField(default='')
+    order_date = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(
+        max_length=50, choices=STATE_CHOICES, default='Active')
+
+    def __str__(self):
+        return f'From {self.user} at '\
+               f'{self.order_date.strftime("%b %-d, %Y, %-I:%-M %p")}'
 
 
 class ProductCart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    order = models.ForeignKey(Order, on_delete=models.DO_NOTHING, blank=True, 
-                              null=True, default=None)
+    order = models.ForeignKey(
+        Order, on_delete=models.DO_NOTHING,
+        blank=True, null=True, default=None
+    )
     quantity = models.IntegerField(default=1)
 
 
